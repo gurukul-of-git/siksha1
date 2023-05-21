@@ -1,0 +1,346 @@
+---------------------------------------------------------------------------------------------------------------
+SHELL SCRIPT
+---------------------------------------------------------------------------------------------------------------
+05-05-2023 Class - 1
+---------------------------------------------------------------------------------------------------------------
+BASH Shell Scripting
+
+To perform repetitive tasks instead of running commands one by one we can write them in a file called as shell scripts.
+
+The extension of shell scripts is .sh
+---------------------------------------------------------------------------------------------------------------
+To execute shell scripts:
+
+1) ./<script>.sh
+2) sh <script>.sh
+3) bash <script>.sh
+---------------------------------------------------------------------------------------------------------------
+Shebang:
+
+The first line of any shell script should always start with shebang
+
+#!/bin/bash
+
+Shebang invokes the bash shell and if it is not used, the shell script will use the default shell
+---------------------------------------------------------------------------------------------------------------
+Example: first.sh
+
+#!/bin/bash
+
+echo "hello"
+echo "How are you"
+
+To execute shell script --> sh first.sh
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+06-05-2023 Class - 2
+---------------------------------------------------------------------------------------------------------------
+Variables:
+
+Variables are a character string to which we can assign some values, The value can be a number, text, filename 
+or any other data
+
+The name of the variable can only contain letters, numbers and underscore
+
+To access the value of the variable inside the script, we have to use $ followed by the variable name
+---------------------------------------------------------------------------------------------------------------
+Example:
+
+#!/bin/bash
+
+name="Adithya"
+place="Bengaluru"
+year=2023
+
+echo "Hi, How are you"
+echo "This is $name, I am from $place"
+echo "Welcome to $year"
+---------------------------------------------------------------------------------------------------------------
+Passing the values during runtime
+
+To pass the arguments or values to the shell script at run time we can $1, $2, $3 .... ${10} ... ${n}
+---------------------------------------------------------------------------------------------------------------
+Example:
+
+#!/bin/bash
+
+name=$1
+place=$2
+
+echo "Hi, How are you"
+echo "This is $name, I am from $place"
+echo "Welcome to $3"
+
+Execution: sh <script.sh> Adithya Bengaluru 2023
+
+Output:
+
+Hi, How are you
+This is Adithya, I am from Bengaluru
+Welcome to 2023
+---------------------------------------------------------------------------------------------------------------
+***Special Variables***
+
+$0 --> The filename of the shell script that is being executed
+$# --> Total number of arguments passed to script
+
+$* --> Gives all the arguments passed to script in string format
+$@ --> Gives all the arguments passed to script in array format
+
+$? --> To check the status of last executed command
+
+$$ --> To check the PID of the current running process
+$! --> To check the PID of the last process that went into background
+---------------------------------------------------------------------------------------------------------------
+Operators:
+
+1. Arithmetic Operators [+, -, /, \*]
+
+Example:
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+sum=`expr $num1 + $num2`
+sub=`expr $num1 - $num2`
+div=`expr $num1 / $num2`
+mult=`expr $num1 \* $num2`
+
+echo "The sum of two numbers is $sum"
+echo "The difference of two numbers is $sub"
+echo "The division of two numbers is $div"
+echo "The product of two numbers is $mult"
+
+(or)
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+sum=$(($num1 + $num2))
+sub=$(($num1 - $num2))
+div=$(($num1 / $num2))
+mult=$(($num1 * $num2))
+
+echo "The sum of two numbers is $sum"
+echo "The difference of two numbers is $sub"
+echo "The division of two numbers is $div"
+echo "The product of two numbers is $mult"
+---------------------------------------------------------------------------------------------------------------
+Relational operators:
+
+a. Strings
+
+Equal -- ==
+Not Equal -- !=
+Less Than -- <
+Less Than or Equal to -- <=
+Greater Than --> >
+Greater Than or Equal to -- >=
+
+b. Numbers
+
+Equal -- eq
+Not Equal -- ne
+Less Than -- lt
+Less Than or Equal to -- le
+Greater Than -- gt
+Greater Than or Equal to -- ge
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+07-05-2023 Class - 3
+---------------------------------------------------------------------------------------------------------------
+Syntax:
+
+if [condition]
+then
+    statements
+else
+    statements
+fi
+
+if [condition]; then
+    statements
+elif [condition]; then
+    statements
+else
+    statements
+fi
+---------------------------------------------------------------------------------------------------------------
+Example:
+
+1. Find the biggest of two numbers
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+if [ $num1 -gt $num2 ]; then
+    echo "$num1 is the greatest of the two numbers"
+else
+    echo "$num2 is the greatest of the two numbers"
+fi
+
+[or]
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+if [ $# -ne 2 ]; then
+    echo "Please enter 2 arguments to the script"
+    exit 1
+fi
+
+if [ $num1 -eq $num2 ]; then
+    echo "Both the numbers are equal"
+elif [ $num1 -gt $num2 ]; then
+    echo "$num1 is the greatest of the two numbers"
+else
+    echo "$num2 is the greatest of the two numbers"
+fi
+---------------------------------------------------------------------------------------------------------------
+Assignments:
+Find the biggest of 3 numbers
+---------------------------------------------------------------------------------------------------------------
+File Operators:
+
+[ -f $<user-input> ] --> To check whether the given input is a file
+[ -d $<user-input> ] --> To check whether the given input is a directory
+
+[ -r $<user-input> ] --> To check whether the given input file has read permission
+[ -w $<user-input> ] --> To check whether the given input file has write permission
+[ -x $<user-input> ] --> To check whether the given input file has Executable permission
+
+[ -e $<user-input> ] --> To check whether the given input file exits on the PWD
+[ -s $<user-input> ] --> To check whether the given input file has some data
+---------------------------------------------------------------------------------------------------------------
+Example: Shell script to check whether input is a file or a directory
+
+#!/bin/bash
+
+echo "Enter the name"
+read name
+
+if [ -f $name ]; then
+    echo "The given input $name is a file"
+elif [ -d $name ]; then
+    echo "The given input $name is a directory"
+else
+    echo "The $name is not a file or a directory"
+fi
+
+[or]
+
+#!/bin/bash
+
+echo "Enter the name"
+read name
+
+if [ -f $name ]; then
+    echo "The given input $name is a file"
+
+    if [ -r $name ]; then
+        echo "The file has Read permission"
+    else
+        echo "The file doesnot have Read permission"
+    fi
+
+    if [ -w $name ]; then
+        echo "The file has Write permission"
+    else
+        echo "The file doesnot have Write permission"
+    fi
+
+    if [ -x $name ]; then
+        echo "The file has Executable permission"
+    else
+        echo "The file doesnot have Executable permission"
+    fi
+
+    if [ -s $name ]; then
+        echo "The file has some data"
+    else
+        echo "The file is empty"
+    fi
+elif [ -d $name ]; then
+    echo "The given input $name is a directory"
+else
+    echo "The $name is not a file or a directory"
+fi
+---------------------------------------------------------------------------------------------------------------
+While Loop
+
+Syntax:
+
+while [condition]
+do
+    statements
+done
+
+while [condition]; do
+    statements
+done
+---------------------------------------------------------------------------------------------------------------
+Example: Find the sum of n numbers
+
+#!/bin/bash
+
+echo "Enter the n value"
+read n
+
+sum=0
+
+while [ $n -gt 0 ]; do
+    sum=`expr $sum + $n`
+    n=`expr $n - 1`
+done
+
+echo "The sum of n numbers is $sum"
+
+(or)
+
+#!/bin/bash
+
+echo "Enter the n value"
+read n
+
+sum=0
+
+while [ $n -gt 0 ]; do
+    sum=`expr $sum + $n`
+    ((n--))
+done
+
+echo "The sum of n numbers is $sum"
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
